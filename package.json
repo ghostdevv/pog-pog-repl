@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^2.0.3",
     "@webcontainer/api": "^1.0.2",
     "ghostsui": "^1.6.0",
     "sass": "^1.58.3",
