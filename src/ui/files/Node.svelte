@@ -12,7 +12,10 @@
     <button
         class="item"
         class:selected={$selected_file_path == node.path}
-        on:click={() => ($selected_file_path = node.path)}>
+        on:click={() => {
+            $selected_file_path =
+                $selected_file_path == node.path ? null : node.path;
+        }}>
         <p>{node.name}</p>
     </button>
 {/if}
