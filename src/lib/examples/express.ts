@@ -36,7 +36,7 @@ export const files: JSONFSNode[] = [
                     })
 
                     app.listen(3000, () => {
-                        console.log('Online');
+                        console.log('Online at http://localhost:3000');
                     })
                 `,
             },
