@@ -13,7 +13,9 @@
     });
 
     function reload() {
-        frame.src += '';
+        if (src.trim().length) {
+            frame.src += '';
+        }
     }
 </script>
 
