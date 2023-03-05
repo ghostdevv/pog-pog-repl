@@ -1,7 +1,7 @@
 <script lang="ts">
     import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
     import type { FileNode } from '$lib/files';
-    import { DUNarrow } from '$lib/types';
+    import type { DUNarrow } from '$lib/types';
     import Node from './Node.svelte';
     import Fa from 'svelte-fa';
 
