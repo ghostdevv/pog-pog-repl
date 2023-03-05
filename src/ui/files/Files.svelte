@@ -20,7 +20,7 @@
     .fs {
         grid-area: fs;
 
-        min-width: 25 0px;
+        min-width: 250px;
 
         border-right: 2px solid var(--background-secondary);
 
