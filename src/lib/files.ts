@@ -71,3 +71,24 @@ export async function list_paths_recursively(
 
     return paths;
 }
+
+export function find_node_for_path(
+    tree: FileNode[],
+    path: string,
+): FileNode | null {
+    for (const node of tree) {
+        if (node.path == path) {
+            return node;
+        }
+
+        if (node.type == 'DIRECTORY') {
+            const result = find_node_for_path(node.children, path);
+
+            if (result) {
+                return result;
+            }
+        }
+    }
+
+    return null;
+}
