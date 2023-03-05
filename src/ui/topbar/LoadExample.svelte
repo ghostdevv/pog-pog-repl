@@ -1,6 +1,7 @@
 <script lang="ts">
     import { type FileNode, write_file_tree } from '$lib/files';
     import { get_container } from '$lib/container';
+    import { refresh_state } from '$lib/state';
 
     let example: 'express' = 'express';
 
@@ -15,7 +16,8 @@
             }
         }
 
-        write_file_tree(container, files);
+        await write_file_tree(container, files);
+        await refresh_state(container);
 
         alert(`Loaded example fs "${example}"`);
     }
