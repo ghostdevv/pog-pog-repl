@@ -5,7 +5,7 @@
 
     let src: string | undefined = undefined;
 
-    container.on('server-ready', (port: number, url: string) => {
+    container.on('server-ready', (_port: number, url: string) => {
         src = url;
     });
 </script>
