@@ -19,7 +19,7 @@
         await write_file_tree(container, files);
         await refresh_state(container);
 
-        alert(`Loaded example fs "${example}"`);
+        console.log(`Loaded example fs "${example}"`);
     }
 </script>
 
