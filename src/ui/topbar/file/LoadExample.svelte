@@ -3,7 +3,7 @@
     import { get_container } from '$lib/container';
     import { refresh_state } from '$lib/state';
 
-    let example: 'express' = 'express';
+    let example: 'express' | 'typescript' = 'express';
 
     const container = get_container();
 
@@ -13,6 +13,12 @@
         switch (example) {
             case 'express': {
                 ({ files } = await import('$lib/examples/express'));
+                break;
+            }
+
+            case 'typescript': {
+                ({ files } = await import('$lib/examples/typescript'));
+                break;
             }
         }
 
@@ -29,6 +35,7 @@
 
         <select bind:value={example}>
             <option value="express">Express</option>
+            <option value="typescript">TypeScript</option>
         </select>
     </label>
 
