@@ -1,5 +1,7 @@
 <script lang="ts">
+    import RefreshState from './state/RefreshState.svelte';
     import LoadExample from './file/LoadExample.svelte';
+    import PeekState from './state/PeekState.svelte';
     import PeekFs from './file/PeekFs.svelte';
 </script>
 
@@ -11,6 +13,16 @@
             <LoadExample />
             <hr />
             <PeekFs />
+        </div>
+    </button>
+
+    <button class="bar-button dropdown">
+        <p>State</p>
+
+        <div class="dropdown-content">
+            <RefreshState />
+            <hr />
+            <PeekState />
         </div>
     </button>
 </div>
