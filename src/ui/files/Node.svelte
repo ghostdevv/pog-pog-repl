@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { FileNode } from '$lib/files';
+    import { selected_file_path } from '$lib/state';
     import Folder from './Folder.svelte';
 
     export let node: FileNode;
@@ -8,18 +9,29 @@
 {#if node.type == 'DIRECTORY'}
     <Folder {node} />
 {:else}
-    <div class="item">
+    <button
+        class="item"
+        class:selected={$selected_file_path == node.path}
+        on:click={() => ($selected_file_path = node.path)}>
         <p>{node.name}</p>
-    </div>
+    </button>
 {/if}
 
 <style lang="scss">
     .item {
-        padding: 4px 8px;
+        all: unset;
+        display: block;
+        margin: 0px;
+
         display: flex;
         align-items: center;
         gap: 8px;
+
+        padding: 4px 8px;
         cursor: pointer;
+
+        border-right: 2px solid transparent;
+        transition: border-color 0.2s ease-in-out;
 
         &:hover:not(.children:hover),
         &:focus:not(.children:focus),
@@ -28,7 +40,7 @@
         }
 
         &.selected {
-            border-right: 2px solid var(--primary);
+            border-color: var(--primary);
         }
     }
 </style>

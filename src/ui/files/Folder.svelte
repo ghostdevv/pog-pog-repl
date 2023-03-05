@@ -29,22 +29,31 @@
 <style lang="scss">
     .folder {
         cursor: pointer;
+
         display: flex;
         flex-direction: column;
         align-items: stretch;
+
         .name {
             all: unset;
             display: flex;
             align-items: center;
             gap: 2px;
+
             padding: 2px 8px;
+
             &:hover:not(.children:hover),
             &:focus:not(.children:focus) {
                 background-color: var(--background-tertiary);
             }
         }
+
         .children {
             padding-left: 8px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
         }
     }
 </style>
