@@ -20,10 +20,6 @@
     .fs {
         grid-area: fs;
 
-        height: 100%;
-        max-height: 100%;
-        overflow-y: auto;
-
         min-width: 200px;
 
         border-right: 2px solid var(--background-secondary);
@@ -33,12 +29,19 @@
             padding: 8px;
         }
 
+        display: flex;
+        flex-direction: column;
+
         .tree {
             display: flex;
             flex-direction: column;
             align-items: stretch;
 
             padding: 8px;
+
+            height: 100%;
+            max-height: 100%;
+            overflow-y: auto;
         }
 
         .tree,
