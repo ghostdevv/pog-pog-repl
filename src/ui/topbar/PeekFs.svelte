@@ -1,12 +1,14 @@
 <script lang="ts">
+    import { list_paths_recursively, read_file_tree } from '$lib/files';
     import { get_container } from '$lib/container';
-    import { list_paths_recursively } from '$lib/files';
 
     const container = get_container();
 
     async function peek() {
         const paths = await list_paths_recursively(container);
-        console.log('peek fs command', paths);
+        const tree = await read_file_tree(container);
+
+        console.log('peek fs command', { paths, tree });
     }
 </script>
 
