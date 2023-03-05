@@ -12,6 +12,10 @@ export default defineConfig({
         },
     },
 
+    optimizeDeps: {
+        exclude: ['monaco-editor'],
+    },
+
     resolve: {
         alias: {
             $lib: resolve('./src/lib'),
