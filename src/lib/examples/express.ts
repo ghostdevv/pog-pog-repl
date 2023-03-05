@@ -13,6 +13,10 @@ export const files: JSONFSNode[] = [
                     "express": "latest",
                     "nodemon": "latest"
                 },
+                "devDependencies": {
+                    "@types/express": "^4.17.17",
+                    "@types/node": "^18.14.6"
+                },
                 "scripts": {
                     "dev": "nodemon src/index.js"
                 }
