@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { type FileNode, write_file_tree } from '$lib/files';
+    import { type JSONFSNode, write_json_fs_tree } from '$lib/files';
     import { get_container } from '$lib/container';
     import { refresh_state } from '$lib/state';
 
@@ -8,7 +8,7 @@
     const container = get_container();
 
     async function load() {
-        let files: FileNode[] = [];
+        let files: JSONFSNode[] = [];
 
         switch (example) {
             case 'express': {
@@ -22,7 +22,7 @@
             }
         }
 
-        await write_file_tree(container, files);
+        await write_json_fs_tree(container, files);
         await refresh_state(container);
 
         console.log(`Loaded example fs "${example}"`);

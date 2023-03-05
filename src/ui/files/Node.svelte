@@ -1,12 +1,12 @@
 <script lang="ts">
-    import type { FileNode } from '$lib/files';
     import { changed_file_paths, selected_file_path } from '$lib/state';
+    import { DirectoryNode, type FSNode } from '$lib/files';
     import Folder from './Folder.svelte';
 
-    export let node: FileNode;
+    export let node: FSNode;
 </script>
 
-{#if node.type == 'DIRECTORY'}
+{#if node instanceof DirectoryNode}
     <Folder {node} />
 {:else}
     <button

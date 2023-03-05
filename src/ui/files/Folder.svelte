@@ -1,11 +1,10 @@
 <script lang="ts">
     import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-    import type { FileNode } from '$lib/files';
-    import type { DUNarrow } from '$lib/types';
+    import type { DirectoryNode } from '$lib/files';
     import Node from './Node.svelte';
     import Fa from 'svelte-fa';
 
-    export let node: DUNarrow<FileNode, 'DIRECTORY'>;
+    export let node: DirectoryNode;
 
     let open = false;
 </script>

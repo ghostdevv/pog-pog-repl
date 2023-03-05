@@ -4,18 +4,17 @@
     import JSONWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
     import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
     import CSSWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
-    import { type FileNode, find_node_for_path } from '$lib/files';
+    import { FileNode, find_node_for_path } from '$lib/files';
     import { changed_file_paths, file_tree } from '$lib/state';
     import { editor as monacoEditor } from 'monaco-editor';
     import { selected_file_path } from '$lib/state';
-    import type { DUNarrow } from '$lib/types';
     import type Monaco from 'monaco-editor';
     import { onMount } from 'svelte';
 
     let editor: Monaco.editor.IStandaloneCodeEditor;
     let element: HTMLDivElement;
 
-    let selected_file_node: DUNarrow<FileNode, 'FILE'> | null = null;
+    let selected_file_node: FileNode | null = null;
 
     onMount(async () => {
         self.MonacoEnvironment = {
@@ -61,7 +60,8 @@
                     ];
                 }
 
-                selected_file_node.contents = text;
+                // TODO add method
+                // selected_file_node.contents = text;
             }
         });
 
@@ -73,7 +73,7 @@
     $: if ($selected_file_path && editor) {
         const node = find_node_for_path($file_tree, $selected_file_path);
 
-        if (node && node.type == 'FILE') {
+        if (node && node instanceof FileNode) {
             selected_file_node = node;
             editor.setValue(node.contents);
         } else {

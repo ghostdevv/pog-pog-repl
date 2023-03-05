@@ -1,8 +1,8 @@
-import { FileNode, find_node_for_path, read_file_tree } from './files';
+import { FSNode, find_node_for_path, read_file_tree } from './files';
 import type { WebContainer } from '@webcontainer/api';
 import { get, writable } from 'svelte/store';
 
-export const file_tree = writable<FileNode[]>([]);
+export const file_tree = writable<FSNode[]>([]);
 
 export const selected_file_path = writable<string | null>(null);
 

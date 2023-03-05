@@ -1,11 +1,10 @@
-import { FileNode } from '$lib/files';
+import { JSONFSNode } from '$lib/files';
 import { stripIndent } from 'common-tags';
 
-export const files: FileNode[] = [
+export const files: JSONFSNode[] = [
     {
         type: 'FILE',
         name: 'package.json',
-        path: 'package.json',
         contents: stripIndent`
             {
                 "name": "express-example",
@@ -23,12 +22,10 @@ export const files: FileNode[] = [
     {
         type: 'DIRECTORY',
         name: 'src',
-        path: 'src',
         children: [
             {
                 type: 'FILE',
                 name: 'index.js',
-                path: 'src/index.js',
                 contents: stripIndent`
                     import express from 'express';
                 
