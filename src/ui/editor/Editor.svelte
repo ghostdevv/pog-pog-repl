@@ -12,6 +12,9 @@
     let editor: Monaco.editor.IStandaloneCodeEditor;
     let element: HTMLDivElement;
 
+    let parentWidth: number;
+    let parentHeight: number;
+
     onMount(async () => {
         self.MonacoEnvironment = {
             getWorker: function (_moduleId, label) {
@@ -73,13 +76,8 @@
         editor.setModel(null);
     }
 
-    function resize() {
-        editor.layout({ width: 0, height: 0 });
-
-        requestAnimationFrame(() => {
-            const rect = element.parentElement!.getBoundingClientRect();
-            editor.layout({ width: rect.width, height: rect.height });
-        });
+    $: if (parentHeight || parentWidth) {
+        editor.layout({ width: parentWidth || 0, height: parentHeight || 0 });
     }
 
     function keydown(event: KeyboardEvent) {
@@ -90,9 +88,12 @@
     }
 </script>
 
-<svelte:window on:keydown={keydown} on:resize={resize} />
+<svelte:window on:keydown={keydown} />
 
-<div class="editor">
+<div
+    class="editor"
+    bind:clientHeight={parentHeight}
+    bind:clientWidth={parentWidth}>
     <div bind:this={element} class="monaco" />
 </div>
 
