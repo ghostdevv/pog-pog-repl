@@ -1,12 +1,11 @@
 <script lang="ts">
     import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
     import type { FileNode } from '$lib/files';
+    import { DUNarrow } from '$lib/types';
     import Node from './Node.svelte';
     import Fa from 'svelte-fa';
 
-    type Narrow<T, N> = T extends { type: N } ? T : never;
-
-    export let node: Narrow<FileNode, 'DIRECTORY'>;
+    export let node: DUNarrow<FileNode, 'DIRECTORY'>;
 
     let open = false;
 </script>
