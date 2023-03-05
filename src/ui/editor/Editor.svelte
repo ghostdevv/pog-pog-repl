@@ -8,7 +8,6 @@
     import { FileNode, find_node_for_path } from '$lib/files';
     import { editor as monacoEditor } from 'monaco-editor';
     import type Monaco from 'monaco-editor';
-    import hotkeys from 'hotkeys-js';
     import { onMount } from 'svelte';
 
     let editor: Monaco.editor.IStandaloneCodeEditor;
@@ -78,16 +77,18 @@
         });
     }
 
-    hotkeys('ctrl+s, cmd+s', (event) => {
-        event.preventDefault();
+    function keydown(event: KeyboardEvent) {
+        if (event.ctrlKey && event.key == 's') {
+            event.preventDefault();
 
-        if (selected_file_node) {
-            selected_file_node.save();
+            if (selected_file_node) {
+                selected_file_node.save();
+            }
         }
-    });
+    }
 </script>
 
-<svelte:window on:resize={resize} />
+<svelte:window on:keydown={keydown} on:resize={resize} />
 
 <div class="editor">
     <div bind:this={element} class="monaco" />
