@@ -1,6 +1,6 @@
 <script lang="ts">
-    import LoadExample from './LoadExample.svelte';
-    import PeekFs from './PeekFs.svelte';
+    import LoadExample from './file/LoadExample.svelte';
+    import PeekFs from './file/PeekFs.svelte';
 </script>
 
 <div class="topbar">
