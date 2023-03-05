@@ -5,12 +5,9 @@
     import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
     import CSSWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
     import { type FileNode, find_node_for_path } from '$lib/files';
-    import {
-        changed_file_paths,
-        file_tree,
-        selected_file_path,
-    } from '$lib/state';
+    import { changed_file_paths, file_tree } from '$lib/state';
     import { editor as monacoEditor } from 'monaco-editor';
+    import { selected_file_path } from '$lib/state';
     import type { DUNarrow } from '$lib/types';
     import type Monaco from 'monaco-editor';
     import { onMount } from 'svelte';
@@ -67,8 +64,6 @@
                 selected_file_node.contents = text;
             }
         });
-
-        console.log(editor);
 
         return () => {
             editor.dispose();
