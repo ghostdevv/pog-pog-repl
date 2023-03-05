@@ -1,7 +1,7 @@
 import type { WebContainer } from '@webcontainer/api';
 
 export type FileNode =
-    | { type: 'FILE'; name: string; path: string; contents?: string }
+    | { type: 'FILE'; name: string; path: string; contents: string }
     | { type: 'DIRECTORY'; name: string; path: string; children: FileNode[] };
 
 export async function write_file_tree(

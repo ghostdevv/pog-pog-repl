@@ -4,12 +4,17 @@
     import JSONWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
     import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
     import CSSWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
+    import { type FileNode, find_node_for_path } from '$lib/files';
+    import { file_tree, selected_file_path } from '$lib/state';
     import { editor as monacoEditor } from 'monaco-editor';
+    import type { DUNarrow } from '$lib/types';
     import type Monaco from 'monaco-editor';
     import { onMount } from 'svelte';
 
     let editor: Monaco.editor.IStandaloneCodeEditor;
     let element: HTMLDivElement;
+
+    let selected_file_node: DUNarrow<FileNode, 'FILE'> | null = null;
 
     onMount(async () => {
         self.MonacoEnvironment = {
@@ -36,14 +41,15 @@
         };
 
         editor = monacoEditor.create(element, {
-            value: '/* Loading... */',
             language: 'typescript',
             theme: 'vs-dark',
-            readOnly: true,
         });
 
         editor.onDidChangeModelContent(() => {
-            // const text = editor.getValue();
+            if (selected_file_node) {
+                const text = editor.getValue();
+                selected_file_node.contents = text;
+            }
         });
 
         console.log(editor);
@@ -52,6 +58,18 @@
             editor.dispose();
         };
     });
+
+    $: if ($selected_file_path && editor) {
+        const node = find_node_for_path($file_tree, $selected_file_path);
+
+        if (node && node.type == 'FILE') {
+            selected_file_node = node;
+            editor.setValue(node.contents);
+        } else {
+            selected_file_node = null;
+            editor.setValue('');
+        }
+    }
 
     function resize() {
         editor.layout({ width: 0, height: 0 });
