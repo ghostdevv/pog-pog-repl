@@ -4,8 +4,8 @@
     import JSONWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
     import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
     import CSSWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
-    import { editor as monacoEditor } from 'monaco-editor';
     import { selected_file } from '$lib/state';
+    import * as monaco from 'monaco-editor';
     import type Monaco from 'monaco-editor';
     import { onMount } from 'svelte';
 
@@ -36,7 +36,7 @@
             },
         };
 
-        editor = monacoEditor.create(element, {
+        editor = monaco.editor.create(element, {
             language: 'typescript',
             theme: 'vs-dark',
         });
@@ -55,7 +55,24 @@
         };
     });
 
-    $: editor?.setValue($selected_file?.contents ?? '');
+    $: if ($selected_file && editor) {
+        const uri = monaco.Uri.file($selected_file.path);
+        const current_model = monaco.editor.getModel(uri);
+
+        if (current_model) {
+            editor.setModel(current_model);
+        } else {
+            const model = monaco.editor.createModel(
+                $selected_file.contents,
+                undefined,
+                uri,
+            );
+
+            editor.setModel(model);
+        }
+    } else if (editor) {
+        editor.setModel(null);
+    }
 
     function resize() {
         editor.layout({ width: 0, height: 0 });
