@@ -4,9 +4,10 @@
     import JSONWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
     import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
     import CSSWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
-    import { selected_file } from '$lib/state';
+    import { file_tree, selected_file } from '$lib/state';
     import * as monaco from 'monaco-editor';
     import type Monaco from 'monaco-editor';
+    import { FileNode, visit } from '$lib/files';
     import { onMount } from 'svelte';
 
     let editor: Monaco.editor.IStandaloneCodeEditor;
@@ -14,6 +15,16 @@
 
     let parentWidth: number;
     let parentHeight: number;
+
+    monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+        moduleResolution:
+            monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+    });
+
+    monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+        moduleResolution:
+            monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+    });
 
     onMount(async () => {
         self.MonacoEnvironment = {
@@ -53,12 +64,31 @@
         });
 
         const interval = setInterval(() => {
+            // const libs: Array<{ content: string; filePath?: string }> = [];
+
+            visit($file_tree, (node) => {
+                if (node instanceof FileNode) {
+                    // if (
+                    //     node.path.includes('node_modules') &&
+                    //     node.path.endsWith('.d.ts')
+                    // ) {
+                    //     libs.push({
+                    //         content: node.contents,
+                    //         filePath: node.path,
+                    //     });
+                    // }
+                    // monaco.editor.
+                }
+            });
+
+            // monaco.languages.typescript.javascriptDefaults.setExtraLibs(libs);
+
             if ($selected_file && !$selected_file.contents_changed) {
                 if ($selected_file.contents != editor.getValue()) {
                     editor.setValue($selected_file.contents);
                 }
             }
-        }, 1000);
+        }, 2000);
 
         return () => {
             editor.dispose();
