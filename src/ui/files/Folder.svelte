@@ -4,7 +4,9 @@
     import Node from './Node.svelte';
     import Fa from 'svelte-fa';
 
-    export let node: FileNode;
+    type Narrow<T, N> = T extends { type: N } ? T : never;
+
+    export let node: Narrow<FileNode, 'DIRECTORY'>;
 
     let open = false;
 </script>
