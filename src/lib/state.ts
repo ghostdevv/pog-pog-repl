@@ -1,4 +1,10 @@
-import { FSNode, find_node_for_path, read_file_tree, FileNode } from './files';
+import {
+    FSNode,
+    find_node_for_path,
+    read_file_tree,
+    FileNode,
+    visit,
+} from './files';
 import type { WebContainer } from '@webcontainer/api';
 import { derived, get, writable } from 'svelte/store';
 
@@ -39,4 +45,15 @@ export async function refresh_state(container: WebContainer) {
             selected_file_path.set(null);
         }
     }
+}
+
+export async function sync_fs(container: WebContainer) {
+    const files = await read_file_tree(container);
+    file_tree.set(files);
+
+    visit(get(file_tree), (node) => {
+        if (node instanceof FileNode) {
+            node.sync_fs();
+        }
+    });
 }

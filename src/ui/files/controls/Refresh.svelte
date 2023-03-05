@@ -1,8 +1,7 @@
 <script lang="ts">
     import { faRefresh } from '@fortawesome/free-solid-svg-icons';
     import { get_container } from '$lib/container';
-    import { read_file_tree } from '$lib/files';
-    import { file_tree } from '$lib/state';
+    import { sync_fs } from '$lib/state';
     import Fa from 'svelte-fa';
 
     let disabled = false;
@@ -12,7 +11,7 @@
     async function refresh() {
         disabled = true;
 
-        $file_tree = await read_file_tree(container);
+        await sync_fs(container);
 
         disabled = false;
     }
