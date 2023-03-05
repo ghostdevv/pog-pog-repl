@@ -4,11 +4,11 @@
     import JSONWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
     import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
     import CSSWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
+    import { selected_file_path, file_tree } from '$lib/state';
     import { FileNode, find_node_for_path } from '$lib/files';
-    import { changed_file_paths, file_tree } from '$lib/state';
     import { editor as monacoEditor } from 'monaco-editor';
-    import { selected_file_path } from '$lib/state';
     import type Monaco from 'monaco-editor';
+    import hotkeys from 'hotkeys-js';
     import { onMount } from 'svelte';
 
     let editor: Monaco.editor.IStandaloneCodeEditor;
@@ -47,21 +47,8 @@
 
         editor.onDidChangeModelContent(() => {
             if (selected_file_node) {
-                const hasAlreadyChanged = $changed_file_paths.includes(
-                    selected_file_node.path,
-                );
-
                 const text = editor.getValue();
-
-                if (!hasAlreadyChanged && text != selected_file_node.contents) {
-                    $changed_file_paths = [
-                        ...$changed_file_paths,
-                        selected_file_node.path,
-                    ];
-                }
-
-                // TODO add method
-                // selected_file_node.contents = text;
+                selected_file_node.contents = text;
             }
         });
 
@@ -90,6 +77,14 @@
             editor.layout({ width: rect.width, height: rect.height });
         });
     }
+
+    hotkeys('ctrl+s, cmd+s', (event) => {
+        event.preventDefault();
+
+        if (selected_file_node) {
+            selected_file_node.save();
+        }
+    });
 </script>
 
 <svelte:window on:resize={resize} />

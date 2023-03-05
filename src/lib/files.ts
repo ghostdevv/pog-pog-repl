@@ -1,4 +1,5 @@
 import type { WebContainer } from '@webcontainer/api';
+import { changed_file_paths } from './state';
 
 export type JSONFSNode =
     | { type: 'FILE'; name: string; contents: string }
@@ -9,11 +10,54 @@ export abstract class FSNode {
 }
 
 export class FileNode extends FSNode {
-    public readonly contents: string;
+    private readonly container: WebContainer;
 
-    constructor(options: { name: string; path: string; contents: string }) {
+    private file_contents: string;
+    private modified: boolean;
+
+    constructor(options: {
+        name: string;
+        path: string;
+        contents: string;
+        container: WebContainer;
+    }) {
         super(options.name, options.path);
-        this.contents = options.contents;
+
+        this.container = options.container;
+
+        this.file_contents = options.contents;
+        this.modified = false;
+    }
+
+    get contents_changed() {
+        return this.modified;
+    }
+
+    get contents() {
+        return this.file_contents;
+    }
+
+    set contents(new_contents: string) {
+        if (this.file_contents == new_contents) return;
+
+        this.file_contents = new_contents;
+
+        if (!this.modified) {
+            this.modified = true;
+            changed_file_paths.update((paths) => [...paths, this.path]);
+        }
+    }
+
+    async save() {
+        if (this.modified) {
+            this.container.fs.writeFile(this.path, this.file_contents, 'utf-8');
+
+            this.modified = false;
+
+            changed_file_paths.update((paths) =>
+                paths.filter((p) => p != this.path),
+            );
+        }
     }
 }
 
@@ -57,7 +101,15 @@ export async function read_file_tree(container: WebContainer, cwd = '.') {
             tree.push(new DirectoryNode({ name: file.name, path, children }));
         } else {
             const contents = await container.fs.readFile(path, 'utf-8');
-            tree.push(new FileNode({ name: file.name, contents, path }));
+
+            const node = new FileNode({
+                name: file.name,
+                contents,
+                path,
+                container,
+            });
+
+            tree.push(node);
         }
     }
 
