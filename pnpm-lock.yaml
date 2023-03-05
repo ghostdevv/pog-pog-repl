@@ -2,8 +2,10 @@ lockfileVersion: 5.4
 
 specifiers:
   '@sveltejs/vite-plugin-svelte': ^2.0.3
+  '@types/common-tags': ^1.8.1
   '@types/node': ^18.14.6
   '@webcontainer/api': ^1.0.2
+  common-tags: ^1.8.2
   ghostsui: ^1.6.0
   sass: ^1.58.3
   svelte: ^3.55.1
@@ -12,8 +14,10 @@ specifiers:
 
 devDependencies:
   '@sveltejs/vite-plugin-svelte': 2.0.3_svelte@3.55.1+vite@4.1.4
+  '@types/common-tags': 1.8.1
   '@types/node': 18.14.6
   '@webcontainer/api': 1.0.2
+  common-tags: 1.8.2
   ghostsui: 1.6.0
   sass: 1.58.3
   svelte: 3.55.1
@@ -243,6 +247,10 @@ packages:
       - supports-color
     dev: true
 
+  /@types/common-tags/1.8.1:
+    resolution: {integrity: sha512-20R/mDpKSPWdJs5TOpz3e7zqbeCNuMCPhV7Yndk9KU2Rbij2r5W4RzwDPkzC+2lzUqXYu9rFzTktCBnDjHuNQg==}
+    dev: true
+
   /@types/node/18.14.6:
     resolution: {integrity: sha512-93+VvleD3mXwlLI/xASjw0FzKcwzl3OdTCzm1LaRfqgS21gfFtK3zDXM5Op9TeeMsJVOaJ2VRDpT9q4Y3d0AvA==}
     dev: true
@@ -284,6 +292,11 @@ packages:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
+
+  /common-tags/1.8.2:
+    resolution: {integrity: sha512-gk/Z852D2Wtb//0I+kRFNKKE9dIIVirjoqPoA1wJU+XePVXZfGeBpk45+A1rKO4Q43prqWBNY/MiIeRLbPWUaA==}
+    engines: {node: '>=4.0.0'}
     dev: true
 
   /debug/4.3.4:
