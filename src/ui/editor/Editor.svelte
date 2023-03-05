@@ -4,7 +4,8 @@
     import JSONWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
     import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
     import CSSWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
-    import Monaco from 'monaco-editor';
+    import { editor as monacoEditor } from 'monaco-editor';
+    import type Monaco from 'monaco-editor';
     import { onMount } from 'svelte';
 
     let editor: Monaco.editor.IStandaloneCodeEditor;
@@ -34,7 +35,7 @@
             },
         };
 
-        editor = Monaco.editor.create(element, {
+        editor = monacoEditor.create(element, {
             value: '/* Loading... */',
             language: 'typescript',
             theme: 'vs-dark',
