@@ -34,7 +34,7 @@
         align-items: center;
         gap: 8px;
 
-        padding: 4px 8px;
+        padding: 4px 12px;
         cursor: pointer;
 
         border-right: 2px solid transparent;

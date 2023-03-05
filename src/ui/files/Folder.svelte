@@ -17,7 +17,7 @@
 
     {#if open}
         <div class="children">
-            {#each node.children as newNode}
+            {#each node.children as newNode (newNode.path)}
                 <Node node={newNode} />
             {/each}
         </div>

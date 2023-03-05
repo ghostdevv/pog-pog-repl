@@ -17,6 +17,8 @@ export const selected_file = derived(
             return node;
         }
 
+        selected_file_path.set(null);
+
         return null;
     },
 );

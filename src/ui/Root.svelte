@@ -5,8 +5,8 @@
     import Editor from './editor/Editor.svelte';
     import Output from './output/Output.svelte';
     import { refresh_state } from '$lib/state';
+    import Files from './files/Files.svelte';
     import { setContext } from 'svelte';
-    import FS from './files/FS.svelte';
 
     export let container: WebContainer;
 
@@ -17,7 +17,7 @@
 
 <main>
     <TopBar />
-    <FS />
+    <Files />
     <Editor />
     <Terminal />
     <Output />
@@ -33,5 +33,6 @@
 
         width: 100%;
         height: 100vh;
+        max-height: 100vh;
     }
 </style>
