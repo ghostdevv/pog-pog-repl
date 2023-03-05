@@ -1,12 +1,13 @@
 <script lang="ts">
     import type { WebContainer } from '@webcontainer/api';
+    import { file_tree, refresh_state } from '$lib/state';
     import Terminal from './terminal/Terminal.svelte';
+    import { FileNode, visit } from '$lib/files';
+    import { setContext, onMount } from 'svelte';
     import TopBar from './topbar/TopBar.svelte';
     import Editor from './editor/Editor.svelte';
     import Output from './output/Output.svelte';
-    import { refresh_state } from '$lib/state';
     import Files from './files/Files.svelte';
-    import { setContext } from 'svelte';
 
     export let container: WebContainer;
 
@@ -14,8 +15,20 @@
 
     refresh_state(container);
 
+    async function sync_fs() {
+        visit($file_tree, (node) => {
+            if (node instanceof FileNode) {
+                node.sync_fs();
+            }
+        });
+    }
+
+    onMount(() => {
+        const interval = setInterval(sync_fs, 1000);
+        return () => clearInterval(interval);
+    });
+
     // TODO
-    // - if file changes in disk it's not reflectted in the editor
     // - tsconfig/jsconfig support
     // - npm modules intellisense support
 </script>

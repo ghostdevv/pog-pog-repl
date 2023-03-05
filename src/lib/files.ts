@@ -59,6 +59,19 @@ export class FileNode extends FSNode {
             );
         }
     }
+
+    async sync_fs() {
+        if (!this.modified) {
+            const fs_contents = await this.container.fs.readFile(
+                this.path,
+                'utf-8',
+            );
+
+            if (fs_contents != this.file_contents) {
+                this.file_contents = fs_contents;
+            }
+        }
+    }
 }
 
 export class DirectoryNode extends FSNode {
@@ -141,19 +154,23 @@ export function find_node_for_path(
     tree: FSNode[],
     path: string,
 ): FSNode | null {
-    for (const node of tree) {
-        if (node.path == path) {
-            return node;
+    let node: FSNode | null = null;
+
+    visit(tree, (found) => {
+        if (found.path == path) {
+            node = found;
         }
+    });
+
+    return node;
+}
+
+export function visit(tree: FSNode[], cb: (node: FSNode) => void) {
+    for (const node of tree) {
+        cb(node);
 
         if (node instanceof DirectoryNode) {
-            const result = find_node_for_path(node.children, path);
-
-            if (result) {
-                return result;
-            }
+            visit(node.children, cb);
         }
     }
-
-    return null;
 }

@@ -52,8 +52,17 @@
             }
         });
 
+        const interval = setInterval(() => {
+            if ($selected_file && !$selected_file.contents_changed) {
+                if ($selected_file.contents != editor.getValue()) {
+                    editor.setValue($selected_file.contents);
+                }
+            }
+        }, 1000);
+
         return () => {
             editor.dispose();
+            clearInterval(interval);
         };
     });
 
