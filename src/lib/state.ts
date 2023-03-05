@@ -1,6 +1,6 @@
 import type { WebContainer } from '@webcontainer/api';
-import { writable } from 'svelte/store';
 import { FileNode, read_file_tree } from './files';
+import { writable } from 'svelte/store';
 
 export const file_tree = writable<FileNode[]>([]);
 
