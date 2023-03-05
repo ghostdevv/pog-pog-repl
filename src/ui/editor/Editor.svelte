@@ -37,7 +37,6 @@
         };
 
         editor = monaco.editor.create(element, {
-            language: 'typescript',
             theme: 'vs-dark',
         });
 
