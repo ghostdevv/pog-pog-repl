@@ -5,7 +5,11 @@
     import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
     import CSSWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
     import { type FileNode, find_node_for_path } from '$lib/files';
-    import { file_tree, selected_file_path } from '$lib/state';
+    import {
+        changed_file_paths,
+        file_tree,
+        selected_file_path,
+    } from '$lib/state';
     import { editor as monacoEditor } from 'monaco-editor';
     import type { DUNarrow } from '$lib/types';
     import type Monaco from 'monaco-editor';
@@ -47,7 +51,19 @@
 
         editor.onDidChangeModelContent(() => {
             if (selected_file_node) {
+                const hasAlreadyChanged = $changed_file_paths.includes(
+                    selected_file_node.path,
+                );
+
                 const text = editor.getValue();
+
+                if (!hasAlreadyChanged && text != selected_file_node.contents) {
+                    $changed_file_paths = [
+                        ...$changed_file_paths,
+                        selected_file_node.path,
+                    ];
+                }
+
                 selected_file_node.contents = text;
             }
         });

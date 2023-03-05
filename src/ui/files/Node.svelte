@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { FileNode } from '$lib/files';
-    import { selected_file_path } from '$lib/state';
+    import { changed_file_paths, selected_file_path } from '$lib/state';
     import Folder from './Folder.svelte';
 
     export let node: FileNode;
@@ -16,7 +16,11 @@
             $selected_file_path =
                 $selected_file_path == node.path ? null : node.path;
         }}>
-        <p>{node.name}</p>
+        {node.name}
+
+        {#if $changed_file_paths.includes(node.path)}
+            *
+        {/if}
     </button>
 {/if}
 
