@@ -1,8 +1,8 @@
 <script lang="ts">
+    import { faRefresh } from '@fortawesome/free-solid-svg-icons';
     import { get_container } from '$lib/container';
     import { read_file_tree } from '$lib/files';
     import { file_tree } from '$lib/state';
-    import { faRefresh } from '@fortawesome/free-solid-svg-icons';
     import Fa from 'svelte-fa';
 
     let disabled = false;
