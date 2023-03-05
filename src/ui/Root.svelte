@@ -13,6 +13,11 @@
     setContext('container', container);
 
     refresh_state(container);
+
+    // TODO
+    // - if file changes in disk it's not reflectted in the editor
+    // - tsconfig/jsconfig support
+    // - npm modules intellisense support
 </script>
 
 <main>
