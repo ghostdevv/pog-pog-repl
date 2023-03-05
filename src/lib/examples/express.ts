@@ -14,7 +14,7 @@ export const files: JSONFSNode[] = [
                     "nodemon": "latest"
                 },
                 "scripts": {
-                    "dev": "nodemon --watch './' index.js"
+                    "dev": "nodemon src/index.js"
                 }
             }
         `,
