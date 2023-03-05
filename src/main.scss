@@ -1,4 +1,48 @@
-// body,
-// html {
-//     height: 100% !important;
-// }
+.bar-button {
+    all: unset;
+    cursor: pointer;
+
+    padding: 16px 22px;
+    font-size: 0.9rem;
+
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    border-radius: none;
+    border: none;
+
+    background-color: var(--background-tertiary);
+    border-bottom: 2px solid var(--primary);
+
+    transition: 0.2s ease-in-out;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
+        border-color: var(--primary);
+    }
+
+    &.dropdown {
+        position: relative;
+
+        &:hover .dropdown-content,
+        &:focus-within .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content {
+            display: none;
+
+            position: absolute;
+            top: 50px;
+            left: 0;
+            
+            background-color: var(--background-secondary);
+            border: 2px solid var(--primary);
+
+            padding: 12px;
+        }
+    }
+}
