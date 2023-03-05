@@ -11,5 +11,6 @@
 
 <style lang="scss">
     .fs {
+        padding: 12px 32px 12px 8px;
     }
 </style>
