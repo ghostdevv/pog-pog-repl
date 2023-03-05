@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { type FileNode, load_file_tree } from '$lib/files';
+    import { type FileNode, write_file_tree } from '$lib/files';
     import { get_container } from '$lib/container';
 
     let example: 'express' = 'express';
@@ -15,7 +15,7 @@
             }
         }
 
-        load_file_tree(container, files);
+        write_file_tree(container, files);
 
         alert(`Loaded example fs "${example}"`);
     }

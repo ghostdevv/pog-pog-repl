@@ -4,7 +4,7 @@ export type FileNode =
     | { type: 'FILE'; name: string; contents: string }
     | { type: 'DIRECTORY'; name: string; children: FileNode[] };
 
-export async function load_file_tree(
+export async function write_file_tree(
     container: WebContainer,
     tree: FileNode[],
     pathSegments: string[] = [],
@@ -19,7 +19,7 @@ export async function load_file_tree(
 
         await container.fs.mkdir(path, { recursive: true });
 
-        await load_file_tree(container, node.children, [
+        await write_file_tree(container, node.children, [
             ...pathSegments,
             node.name,
         ]);
