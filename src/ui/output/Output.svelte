@@ -6,13 +6,14 @@
     const container = get_container();
 
     let src: string = '';
+    let frame: HTMLIFrameElement;
 
     container.on('server-ready', (_port: number, url: string) => {
         src = url;
     });
 
     function reload() {
-        src = src;
+        frame.src += '';
     }
 </script>
 
@@ -25,7 +26,7 @@
         <input type="text" class="url" bind:value={src} />
     </div>
 
-    <iframe class="frame" {src} title="Result" />
+    <iframe bind:this={frame} class="frame" {src} title="Result" />
 </div>
 
 <style lang="scss">
