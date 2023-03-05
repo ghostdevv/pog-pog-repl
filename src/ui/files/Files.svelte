@@ -27,6 +27,10 @@
         .controls {
             background-color: var(--background-secondary);
             padding: 8px;
+
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         display: flex;
