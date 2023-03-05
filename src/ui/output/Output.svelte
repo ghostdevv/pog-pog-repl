@@ -1,4 +1,16 @@
-<iframe class="output" src="https://echo.willow.sh?q=asd" title="Result" />
+<script lang="ts">
+    import { get_container } from '$lib/container';
+
+    const container = get_container();
+
+    let src: string | undefined = undefined;
+
+    container.on('server-ready', (port: number, url: string) => {
+        src = url;
+    });
+</script>
+
+<iframe class="output" {src} title="Result" />
 
 <style lang="scss">
     .output {

@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { WebContainer } from '@webcontainer/api';
+    import Terminal from './terminal/Terminal.svelte';
     import TopBar from './topbar/TopBar.svelte';
     import Editor from './editor/Editor.svelte';
     import Output from './output/Output.svelte';
@@ -18,6 +19,7 @@
     <TopBar />
     <FS />
     <Editor />
+    <Terminal />
     <Output />
 </main>
 
@@ -25,8 +27,8 @@
     main {
         display: grid;
         grid-template-columns: max-content 1fr 1fr;
-        grid-template-rows: max-content 1fr;
-        grid-template-areas: 'topbar topbar topbar' 'fs editor output';
+        grid-template-rows: max-content 1fr max-content;
+        grid-template-areas: 'topbar topbar topbar' 'fs editor output' 'fs terminal output';
         align-items: stretch;
 
         width: 100%;

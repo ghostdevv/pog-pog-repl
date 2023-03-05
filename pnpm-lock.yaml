@@ -14,6 +14,7 @@ specifiers:
   svelte-fa: ^3.0.3
   typescript: ^4.9.3
   vite: ^4.1.0
+  xterm: ^5.1.0
 
 devDependencies:
   '@fortawesome/free-solid-svg-icons': 6.3.0
@@ -29,6 +30,7 @@ devDependencies:
   svelte-fa: 3.0.3
   typescript: 4.9.5
   vite: 4.1.4_tbu6ibuzbmq2zng52hwcifltki
+  xterm: 5.1.0
 
 packages:
 
@@ -633,4 +635,8 @@ packages:
         optional: true
     dependencies:
       vite: 4.1.4_tbu6ibuzbmq2zng52hwcifltki
+    dev: true
+
+  /xterm/5.1.0:
+    resolution: {integrity: sha512-LovENH4WDzpwynj+OTkLyZgJPeDom9Gra4DMlGAgz6pZhIDCQ+YuO7yfwanY+gVbn/mmZIStNOnVRU/ikQuAEQ==}
     dev: true
