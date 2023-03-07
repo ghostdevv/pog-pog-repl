@@ -2,7 +2,6 @@
     import RefreshState from './state/RefreshState.svelte';
     import LoadExample from './file/LoadExample.svelte';
     import PeekState from './state/PeekState.svelte';
-    import SaveAll from './file/SaveAll.svelte';
     import PeekFs from './file/PeekFs.svelte';
 </script>
 
@@ -14,8 +13,6 @@
             <LoadExample />
             <hr />
             <PeekFs />
-            <hr />
-            <SaveAll />
         </div>
     </button>
 
