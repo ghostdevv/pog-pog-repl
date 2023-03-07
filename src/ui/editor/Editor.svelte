@@ -27,6 +27,9 @@
             monaco.languages.typescript.ModuleResolutionKind.NodeJs,
     });
 
+    monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
+    monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
+
     onMount(async () => {
         self.MonacoEnvironment = {
             getWorker: function (_moduleId, label) {
