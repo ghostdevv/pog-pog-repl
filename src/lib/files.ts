@@ -165,6 +165,14 @@ export function find_node_for_path(
     return node;
 }
 
+export function flatten_tree(tree: FSNode[]) {
+    const nodes: FSNode[] = [];
+
+    visit(tree, (node) => nodes.push(node));
+
+    return nodes;
+}
+
 export function visit(tree: FSNode[], cb: (node: FSNode) => void) {
     for (const node of tree) {
         cb(node);

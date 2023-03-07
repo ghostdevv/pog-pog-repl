@@ -4,6 +4,7 @@ import {
     read_file_tree,
     FileNode,
     visit,
+    flatten_tree,
 } from './files';
 import type { WebContainer } from '@webcontainer/api';
 import { derived, get, writable } from 'svelte/store';
@@ -48,8 +49,21 @@ export async function refresh_state(container: WebContainer) {
 }
 
 export async function sync_fs(container: WebContainer) {
-    const files = await read_file_tree(container);
-    file_tree.set(files);
+    const new_tree = await read_file_tree(container);
+    const current_tree = get(file_tree);
+
+    const current_paths = flatten_tree(current_tree).map((node) => node.path);
+    const new_paths = flatten_tree(new_tree).map((node) => node.path);
+
+    if (current_paths.length != new_paths.length) {
+        file_tree.set(new_tree);
+        return;
+    }
+
+    if (current_paths.some((path) => !new_paths.includes(path))) {
+        file_tree.set(new_tree);
+        return;
+    }
 
     visit(get(file_tree), (node) => {
         if (node instanceof FileNode) {
