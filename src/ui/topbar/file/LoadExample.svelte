@@ -39,7 +39,7 @@
         </select>
     </label>
 
-    <button on:click={load}>Load</button>
+    <button class="secondary" on:click={load}>Load</button>
 </div>
 
 <style lang="scss">

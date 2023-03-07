@@ -15,4 +15,4 @@
     }
 </script>
 
-<button on:click={reset}>Reset REPL</button>
+<button class="secondary" on:click={reset}>Reset REPL</button>
