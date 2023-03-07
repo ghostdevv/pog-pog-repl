@@ -1,12 +1,12 @@
 <script lang="ts">
     import type { WebContainer } from '@webcontainer/api';
-    import { refresh_state, sync_fs } from '$lib/state';
     import Terminal from './terminal/Terminal.svelte';
     import type { MonacoEditor } from '$lib/types';
     import { setContext, onMount } from 'svelte';
     import TopBar from './topbar/TopBar.svelte';
     import Editor from './editor/Editor.svelte';
     import Output from './output/Output.svelte';
+    import { refresh_state } from '$lib/state';
     import Files from './files/Files.svelte';
 
     export let container: WebContainer;
@@ -18,7 +18,7 @@
     refresh_state(container);
 
     onMount(() => {
-        const interval = setInterval(() => sync_fs(container), 2000);
+        const interval = setInterval(() => refresh_state(container), 2000);
         return () => clearInterval(interval);
     });
 

@@ -19,9 +19,9 @@ export async function refresh_state(container: WebContainer) {
     if (current_selected_file_path) {
         let node: FSNode | null = null;
 
-        visit(current_file_tree, (node) => {
-            if (node.path == current_selected_file_path) {
-                node = node;
+        visit(current_file_tree, (n) => {
+            if (n.path == current_selected_file_path) {
+                node = n;
             }
         });
 
@@ -29,6 +29,8 @@ export async function refresh_state(container: WebContainer) {
             selected_file_path.set(null);
 
             const model = get_model(current_selected_file_path);
+
+            console.log('Selected node no longer exists, deleting model');
 
             if (model) {
                 model.dispose();
