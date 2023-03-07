@@ -4,17 +4,16 @@
     import JSONWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
     import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
     import CSSWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
-    import { file_tree, selected_file } from '$lib/state';
+    import { changed_file_paths, selected_file_path } from '$lib/state';
+    import { get_container } from '$lib/container';
     import * as monaco from 'monaco-editor';
     import type Monaco from 'monaco-editor';
-    import { FileNode, visit } from '$lib/files';
     import { onMount } from 'svelte';
 
     let editor: Monaco.editor.IStandaloneCodeEditor;
     let element: HTMLDivElement;
 
-    let parentWidth: number;
-    let parentHeight: number;
+    const container = get_container();
 
     monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
         moduleResolution:
@@ -52,40 +51,20 @@
 
         editor = monaco.editor.create(element, {
             theme: 'vs-dark',
+            automaticLayout: true,
         });
 
-        editor.onDidChangeModelContent(() => {
-            const text = editor.getValue();
-            const file = $selected_file;
+        const interval = setInterval(async () => {
+            if ($selected_file_path) {
+                if (!$changed_file_paths.includes($selected_file_path)) {
+                    const contents = await container.fs.readFile(
+                        $selected_file_path,
+                        'utf-8',
+                    );
 
-            if (file) {
-                file.contents = text;
-            }
-        });
-
-        const interval = setInterval(() => {
-            // const libs: Array<{ content: string; filePath?: string }> = [];
-
-            visit($file_tree, (node) => {
-                if (node instanceof FileNode) {
-                    // if (
-                    //     node.path.includes('node_modules') &&
-                    //     node.path.endsWith('.d.ts')
-                    // ) {
-                    //     libs.push({
-                    //         content: node.contents,
-                    //         filePath: node.path,
-                    //     });
-                    // }
-                    // monaco.editor.
-                }
-            });
-
-            // monaco.languages.typescript.javascriptDefaults.setExtraLibs(libs);
-
-            if ($selected_file && !$selected_file.contents_changed) {
-                if ($selected_file.contents != editor.getValue()) {
-                    editor.setValue($selected_file.contents);
+                    if (editor.getValue() != contents) {
+                        editor.setValue(contents);
+                    }
                 }
             }
         }, 2000);
@@ -96,45 +75,51 @@
         };
     });
 
-    $: if ($selected_file && editor) {
-        const uri = monaco.Uri.file($selected_file.path);
+    async function create_or_get_model(path: string) {
+        const uri = monaco.Uri.file(path);
         const current_model = monaco.editor.getModel(uri);
 
         if (current_model) {
             editor.setModel(current_model);
         } else {
-            const model = monaco.editor.createModel(
-                $selected_file.contents,
-                undefined,
-                uri,
-            );
+            const contents = await container.fs.readFile(path, 'utf-8');
+            const model = monaco.editor.createModel(contents, undefined, uri);
+
+            model.onDidChangeContent((event) => {
+                console.log(`Content Changed: ${path}`);
+
+                if (!$changed_file_paths.includes(path) && !event.isFlush) {
+                    changed_file_paths.update((p) => [...p, path]);
+                }
+            });
 
             editor.setModel(model);
         }
     }
 
-    $: if (!$selected_file && editor) {
+    $: if ($selected_file_path && editor) {
+        create_or_get_model($selected_file_path);
+    } else if (editor) {
         editor.setModel(null);
     }
 
-    $: if (parentHeight || parentWidth) {
-        editor.layout({ width: parentWidth || 0, height: parentHeight || 0 });
-    }
-
-    function keydown(event: KeyboardEvent) {
-        if (event.ctrlKey && event.key == 's') {
+    async function keydown(event: KeyboardEvent) {
+        if (event.ctrlKey && event.key == 's' && $selected_file_path) {
             event.preventDefault();
-            $selected_file?.save();
+
+            const path = $selected_file_path;
+            await container.fs.writeFile(path, editor.getValue(), 'utf-8');
+
+            if ($changed_file_paths.includes(path)) {
+                changed_file_paths.update((p) => p.filter((x) => x != path));
+            }
         }
     }
 </script>
 
 <svelte:window on:keydown={keydown} />
 
-<div
-    class="editor"
-    bind:clientHeight={parentHeight}
-    bind:clientWidth={parentWidth}>
+<div class="editor">
     <div bind:this={element} class="monaco" />
 </div>
 

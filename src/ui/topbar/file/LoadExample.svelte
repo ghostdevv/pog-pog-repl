@@ -1,6 +1,7 @@
 <script lang="ts">
     import { type JSONFSNode, write_json_fs_tree } from '$lib/files';
     import { get_container } from '$lib/container';
+    import { refresh_state } from '$lib/state';
 
     let example: 'express' | 'typescript' = 'express';
 
@@ -22,6 +23,7 @@
         }
 
         await write_json_fs_tree(container, files);
+        await refresh_state(container);
 
         console.log(`Loaded example fs "${example}"`);
     }

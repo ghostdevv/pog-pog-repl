@@ -1,86 +1,27 @@
 import type { WebContainer } from '@webcontainer/api';
-import { changed_file_paths } from './state';
 
-export type JSONFSNode =
-    | { type: 'FILE'; name: string; contents: string }
-    | { type: 'DIRECTORY'; name: string; children: JSONFSNode[] };
+export type JSONFSNode = JSONFileNode | JSONDirectoryNode;
 
-export abstract class FSNode {
-    constructor(public readonly name: string, public readonly path: string) {}
-}
+export type JSONFileNode = Omit<FileNode, 'path'> & { contents: string };
 
-export class FileNode extends FSNode {
-    private readonly container: WebContainer;
+export type JSONDirectoryNode = Omit<DirectoryNode, 'path' | 'children'> & {
+    children: JSONFSNode[];
+};
 
-    private file_contents: string;
-    private modified: boolean;
+export type FSNode = FileNode | DirectoryNode;
 
-    constructor(options: {
-        name: string;
-        path: string;
-        contents: string;
-        container: WebContainer;
-    }) {
-        super(options.name, options.path);
+export type FileNode = {
+    type: 'FILE';
+    name: string;
+    path: string;
+};
 
-        this.container = options.container;
-
-        this.file_contents = options.contents;
-        this.modified = false;
-    }
-
-    get contents_changed() {
-        return this.modified;
-    }
-
-    get contents() {
-        return this.file_contents;
-    }
-
-    set contents(new_contents: string) {
-        if (this.file_contents == new_contents) return;
-
-        this.file_contents = new_contents;
-
-        if (!this.modified) {
-            this.modified = true;
-            changed_file_paths.update((paths) => [...paths, this.path]);
-        }
-    }
-
-    async save() {
-        if (this.modified) {
-            this.container.fs.writeFile(this.path, this.file_contents, 'utf-8');
-
-            this.modified = false;
-
-            changed_file_paths.update((paths) =>
-                paths.filter((p) => p != this.path),
-            );
-        }
-    }
-
-    async sync_fs() {
-        if (!this.modified) {
-            const fs_contents = await this.container.fs.readFile(
-                this.path,
-                'utf-8',
-            );
-            if (fs_contents != this.file_contents) {
-                this.file_contents = fs_contents;
-            }
-        }
-    }
-}
-
-export class DirectoryNode extends FSNode {
-    public children: FSNode[];
-
-    constructor(options: { name: string; path: string; children: FSNode[] }) {
-        super(options.name, options.path);
-        this.children = options.children;
-    }
-}
+export type DirectoryNode = {
+    type: 'DIRECTORY';
+    name: string;
+    path: string;
+    children: FSNode[];
+};
 
 export async function write_json_fs_tree(
     container: WebContainer,
@@ -101,7 +42,7 @@ export async function write_json_fs_tree(
     }
 }
 
-export async function read_file_tree(container: WebContainer, cwd = '.') {
+export async function read_fs_tree(container: WebContainer, cwd = '.') {
     const files = await container.fs.readdir(cwd, { withFileTypes: true });
     const tree: FSNode[] = [];
 
@@ -109,29 +50,17 @@ export async function read_file_tree(container: WebContainer, cwd = '.') {
         const path = `${cwd}/${file.name}`;
 
         if (file.isDirectory()) {
-            const children = await read_file_tree(container, path);
-            tree.push(new DirectoryNode({ name: file.name, path, children }));
+            const children = await read_fs_tree(container, path);
+            tree.push({ type: 'DIRECTORY', path, name: file.name, children });
         } else {
-            const contents = await container.fs.readFile(path, 'utf-8');
-
-            const node = new FileNode({
-                name: file.name,
-                contents,
-                path,
-                container,
-            });
-
-            tree.push(node);
+            tree.push({ type: 'FILE', path, name: file.name });
         }
     }
 
     return tree;
 }
 
-export async function list_file_paths_recursively(
-    container: WebContainer,
-    cwd = '.',
-) {
+export async function list_file_paths(container: WebContainer, cwd = '.') {
     const files = await container.fs.readdir(cwd, { withFileTypes: true });
     const paths: string[] = [];
 
@@ -139,7 +68,7 @@ export async function list_file_paths_recursively(
         const path = `${cwd}/${file.name}`;
 
         if (file.isDirectory()) {
-            const recPaths = await list_file_paths_recursively(container, path);
+            const recPaths = await list_file_paths(container, path);
             paths.push(...recPaths);
         } else {
             paths.push(path);
@@ -147,37 +76,4 @@ export async function list_file_paths_recursively(
     }
 
     return paths;
-}
-
-export function find_node_for_path(
-    tree: FSNode[],
-    path: string,
-): FSNode | null {
-    let node: FSNode | null = null;
-
-    visit(tree, (found) => {
-        if (found.path == path) {
-            node = found;
-        }
-    });
-
-    return node;
-}
-
-export function flatten_tree(tree: FSNode[]) {
-    const nodes: FSNode[] = [];
-
-    visit(tree, (node) => nodes.push(node));
-
-    return nodes;
-}
-
-export function visit(tree: FSNode[], cb: (node: FSNode) => void) {
-    for (const node of tree) {
-        cb(node);
-
-        if (node instanceof DirectoryNode) {
-            visit(node.children, cb);
-        }
-    }
 }
