@@ -66,7 +66,6 @@ export class FileNode extends FSNode {
                 this.path,
                 'utf-8',
             );
-
             if (fs_contents != this.file_contents) {
                 this.file_contents = fs_contents;
             }
@@ -75,7 +74,7 @@ export class FileNode extends FSNode {
 }
 
 export class DirectoryNode extends FSNode {
-    public readonly children: FSNode[];
+    public children: FSNode[];
 
     constructor(options: { name: string; path: string; children: FSNode[] }) {
         super(options.name, options.path);
@@ -129,7 +128,7 @@ export async function read_file_tree(container: WebContainer, cwd = '.') {
     return tree;
 }
 
-export async function list_paths_recursively(
+export async function list_file_paths_recursively(
     container: WebContainer,
     cwd = '.',
 ) {
@@ -140,7 +139,7 @@ export async function list_paths_recursively(
         const path = `${cwd}/${file.name}`;
 
         if (file.isDirectory()) {
-            const recPaths = await list_paths_recursively(container, path);
+            const recPaths = await list_file_paths_recursively(container, path);
             paths.push(...recPaths);
         } else {
             paths.push(path);

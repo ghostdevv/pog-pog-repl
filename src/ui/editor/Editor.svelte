@@ -111,7 +111,9 @@
 
             editor.setModel(model);
         }
-    } else if (editor) {
+    }
+
+    $: if (!$selected_file && editor) {
         editor.setModel(null);
     }
 
