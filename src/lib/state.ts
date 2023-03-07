@@ -59,6 +59,8 @@ export async function sync_fs(container: WebContainer) {
         if (!new_tree_paths.includes(path)) {
             const model = get_model(path);
 
+            console.log(`Disposing ${path}`);
+
             if (model) {
                 model.dispose();
             }
