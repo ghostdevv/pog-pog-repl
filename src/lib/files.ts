@@ -77,3 +77,21 @@ export async function list_file_paths(container: WebContainer, cwd = '.') {
 
     return paths;
 }
+
+export function visit(tree: FSNode[], cb: (node: FSNode) => void) {
+    for (const node of tree) {
+        cb(node);
+
+        if (node.type == 'DIRECTORY') {
+            visit(node.children, cb);
+        }
+    }
+}
+
+export function flatten_tree(tree: FSNode[]) {
+    const nodes: FSNode[] = [];
+
+    visit(tree, (node) => nodes.push(node));
+
+    return nodes;
+}

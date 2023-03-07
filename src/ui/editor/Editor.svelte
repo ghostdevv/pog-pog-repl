@@ -5,12 +5,14 @@
     import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
     import CSSWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
     import { changed_file_paths, selected_file_path } from '$lib/state';
+    import { create_or_get_model } from '$lib/monaco';
+    import type { MonacoEditor } from '$lib/types';
     import { get_container } from '$lib/container';
     import * as monaco from 'monaco-editor';
-    import type Monaco from 'monaco-editor';
     import { onMount } from 'svelte';
 
-    let editor: Monaco.editor.IStandaloneCodeEditor;
+    export let editor: MonacoEditor | null = null;
+
     let element: HTMLDivElement;
 
     const container = get_container();
@@ -62,43 +64,26 @@
                         'utf-8',
                     );
 
-                    if (editor.getValue() != contents) {
-                        editor.setValue(contents);
+                    if (editor?.getValue() != contents) {
+                        editor?.setValue(contents);
                     }
                 }
             }
-        }, 2000);
+        }, 5000);
 
         return () => {
-            editor.dispose();
+            editor?.dispose();
             clearInterval(interval);
         };
     });
 
-    async function create_or_get_model(path: string) {
-        const uri = monaco.Uri.file(path);
-        const current_model = monaco.editor.getModel(uri);
-
-        if (current_model) {
-            editor.setModel(current_model);
-        } else {
-            const contents = await container.fs.readFile(path, 'utf-8');
-            const model = monaco.editor.createModel(contents, undefined, uri);
-
-            model.onDidChangeContent((event) => {
-                console.log(`Content Changed: ${path}`);
-
-                if (!$changed_file_paths.includes(path) && !event.isFlush) {
-                    changed_file_paths.update((p) => [...p, path]);
-                }
-            });
-
-            editor.setModel(model);
-        }
+    async function set_file(path: string) {
+        const model = await create_or_get_model(container, path);
+        editor?.setModel(model);
     }
 
     $: if ($selected_file_path && editor) {
-        create_or_get_model($selected_file_path);
+        set_file($selected_file_path);
     } else if (editor) {
         editor.setModel(null);
     }
@@ -107,11 +92,15 @@
         if (event.ctrlKey && event.key == 's' && $selected_file_path) {
             event.preventDefault();
 
-            const path = $selected_file_path;
-            await container.fs.writeFile(path, editor.getValue(), 'utf-8');
+            if ($selected_file_path && editor) {
+                const path = $selected_file_path;
+                await container.fs.writeFile(path, editor.getValue(), 'utf-8');
 
-            if ($changed_file_paths.includes(path)) {
-                changed_file_paths.update((p) => p.filter((x) => x != path));
+                if ($changed_file_paths.includes(path)) {
+                    changed_file_paths.update((p) =>
+                        p.filter((x) => x != path),
+                    );
+                }
             }
         }
     }

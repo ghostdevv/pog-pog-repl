@@ -1,6 +1,7 @@
-import { type FSNode, read_fs_tree } from './files';
+import { type FSNode, read_fs_tree, flatten_tree, visit } from './files';
+import { create_or_get_model, get_model } from './monaco';
 import type { WebContainer } from '@webcontainer/api';
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 
 export const file_tree = writable<FSNode[]>([]);
 
@@ -11,22 +12,58 @@ export const changed_file_paths = writable<string[]>([]);
 export async function refresh_state(container: WebContainer) {
     await sync_fs(container);
 
-    // const currentSelectedFilePath = get(selected_file_path);
+    const current_selected_file_path = get(selected_file_path);
+    const current_file_tree = get(file_tree);
 
-    // // Make sure the selected file actually exists
-    // if (currentSelectedFilePath) {
-    //     const foundNode = find_node_for_path(
-    //         get(file_tree),
-    //         currentSelectedFilePath,
-    //     );
+    // Checks that node still exists
+    if (current_selected_file_path) {
+        let node: FSNode | null = null;
 
-    //     if (!foundNode) {
-    //         selected_file_path.set(null);
-    //     }
-    // }
+        visit(current_file_tree, (node) => {
+            if (node.path == current_selected_file_path) {
+                node = node;
+            }
+        });
+
+        if (!node) {
+            selected_file_path.set(null);
+
+            const model = get_model(current_selected_file_path);
+
+            if (model) {
+                model.dispose();
+            }
+        }
+    }
 }
 
 export async function sync_fs(container: WebContainer) {
-    const tree = await read_fs_tree(container);
-    file_tree.set(tree);
+    const new_tree = await read_fs_tree(container);
+    const current_tree = get(file_tree);
+
+    const new_tree_paths = flatten_tree(new_tree)
+        .filter((node) => node.type == 'FILE')
+        .map((node) => node.path);
+
+    const current_tree_paths = flatten_tree(current_tree)
+        .filter((node) => node.type == 'FILE')
+        .map((node) => node.path);
+
+    for (const path of new_tree_paths) {
+        if (!current_tree_paths.includes(path)) {
+            await create_or_get_model(container, path);
+        }
+    }
+
+    for (const path of current_tree_paths) {
+        if (!new_tree_paths.includes(path)) {
+            const model = get_model(path);
+
+            if (model) {
+                model.dispose();
+            }
+        }
+    }
+
+    file_tree.set(new_tree);
 }
