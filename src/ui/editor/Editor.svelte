@@ -20,11 +20,13 @@
     monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
         moduleResolution:
             monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+        checkJs: true,
     });
 
     monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
         moduleResolution:
             monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+        checkJs: true,
     });
 
     monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
