@@ -1,5 +1,5 @@
-import { JSONFSNode } from '$lib/files';
 import { stripIndent } from 'common-tags';
+import { JSONFSNode } from '$lib/files';
 
 export const files: JSONFSNode[] = [
     {
