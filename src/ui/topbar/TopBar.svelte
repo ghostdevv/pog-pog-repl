@@ -2,7 +2,7 @@
     import RefreshState from './state/RefreshState.svelte';
     import LoadExample from './file/LoadExample.svelte';
     import PeekState from './state/PeekState.svelte';
-    import PeekFs from './file/PeekFs.svelte';
+    import ResetFS from './file/ResetFS.svelte';
 </script>
 
 <div class="topbar">
@@ -12,7 +12,7 @@
         <div class="dropdown-content">
             <LoadExample />
             <hr />
-            <PeekFs />
+            <ResetFS />
         </div>
     </button>
 
