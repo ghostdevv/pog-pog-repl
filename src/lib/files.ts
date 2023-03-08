@@ -120,3 +120,8 @@ export function flatten_tree(tree: FSNode[]) {
 
     return nodes;
 }
+
+export async function load_ppr(container: WebContainer, raw: string) {
+    const { data }: PPRFile = JSON.parse(raw);
+    await write_json_fs_tree(container, data);
+}

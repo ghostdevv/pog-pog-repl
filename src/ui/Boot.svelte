@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { type PPRFile, write_json_fs_tree } from '$lib/files';
     import { WebContainer } from '@webcontainer/api';
     import { refresh_state } from '$lib/state';
+    import { load_ppr } from '$lib/files';
     import Root from './Root.svelte';
 
     let container = load();
@@ -13,8 +13,7 @@
         const ppr = params.get('ppr');
 
         if (typeof ppr == 'string') {
-            const { data }: PPRFile = JSON.parse(atob(ppr));
-            await write_json_fs_tree(container, data);
+            await load_ppr(container, atob(ppr));
         }
 
         await refresh_state(container);
