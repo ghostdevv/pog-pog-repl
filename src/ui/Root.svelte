@@ -15,8 +15,6 @@
 
     setContext('container', container);
 
-    refresh_state(container);
-
     onMount(() => {
         const interval = setInterval(() => refresh_state(container), 2000);
         return () => clearInterval(interval);

@@ -23,6 +23,10 @@ export type DirectoryNode = {
     children: FSNode[];
 };
 
+export interface PPRFile {
+    data: JSONFSNode[];
+}
+
 export async function write_json_fs_tree(
     container: WebContainer,
     tree: JSONFSNode[],
@@ -40,6 +44,27 @@ export async function write_json_fs_tree(
             await write_json_fs_tree(container, node.children, path);
         }
     }
+}
+
+// TODO ignore node_modules
+// and anything in .gitignore
+export async function read_json_fs_free(container: WebContainer, cwd = '.') {
+    const files = await container.fs.readdir(cwd, { withFileTypes: true });
+    const tree: JSONFSNode[] = [];
+
+    for (const file of files) {
+        const path = `${cwd}/${file.name}`;
+
+        if (file.isDirectory()) {
+            const children = await read_json_fs_free(container, path);
+            tree.push({ type: 'DIRECTORY', name: file.name, children });
+        } else {
+            const contents = await container.fs.readFile(path, 'utf-8');
+            tree.push({ type: 'FILE', name: file.name, contents });
+        }
+    }
+
+    return tree;
 }
 
 export async function read_fs_tree(container: WebContainer, cwd = '.') {

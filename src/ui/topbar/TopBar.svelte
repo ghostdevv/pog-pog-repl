@@ -3,6 +3,7 @@
     import LoadExample from './file/LoadExample.svelte';
     import PeekState from './state/PeekState.svelte';
     import ResetFS from './file/ResetFS.svelte';
+    import Save from './file/Save.svelte';
 </script>
 
 <div class="topbar">
@@ -13,6 +14,8 @@
             <LoadExample />
             <hr />
             <ResetFS />
+            <hr />
+            <Save />
         </div>
     </button>
 
