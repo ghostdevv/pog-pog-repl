@@ -94,7 +94,11 @@
     }
 
     async function keydown(event: KeyboardEvent) {
-        if (event.ctrlKey && event.key == 's' && $selected_file_path) {
+        if (
+            (event.ctrlKey || event.metaKey) &&
+            event.key == 's' &&
+            $selected_file_path
+        ) {
             event.preventDefault();
 
             if ($selected_file_path && editor) {
