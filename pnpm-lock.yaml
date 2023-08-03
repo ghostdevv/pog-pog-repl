@@ -1,12 +1,16 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 devDependencies:
   '@fortawesome/free-solid-svg-icons':
     specifier: ^6.3.0
     version: 6.3.0
   '@sveltejs/vite-plugin-svelte':
     specifier: ^2.0.3
-    version: 2.0.3(svelte@3.55.1)(vite@4.1.4)
+    version: 2.0.3(svelte@3.55.1)(vite@4.1.5)
   '@types/common-tags':
     specifier: ^1.8.1
     version: 1.8.1
@@ -41,8 +45,8 @@ devDependencies:
     specifier: ^4.9.3
     version: 4.9.5
   vite:
-    specifier: ^4.1.0
-    version: 4.1.4(@types/node@18.14.6)(sass@1.58.3)
+    specifier: ^4.1.5
+    version: 4.1.5(@types/node@18.14.6)(sass@1.58.3)
   xterm:
     specifier: ^5.1.0
     version: 5.1.0
@@ -265,7 +269,7 @@ packages:
     resolution: {integrity: sha512-XPSJHWmi394fuUuzDnGz1wiKqWfo1yXecHQMRf2l6hztTO+nPru658AyDngaBe7isIxEkRsPR3FZh+s7iVa4Uw==}
     dev: true
 
-  /@sveltejs/vite-plugin-svelte@2.0.3(svelte@3.55.1)(vite@4.1.4):
+  /@sveltejs/vite-plugin-svelte@2.0.3(svelte@3.55.1)(vite@4.1.5):
     resolution: {integrity: sha512-o+cguBFdwIGtRbNkYOyqTM7KvRUffxh5bfK4oJsWKG2obu+v/cbpT03tJrGl58C7tRXo/aEC0/axN5FVHBj0nA==}
     engines: {node: ^14.18.0 || >= 16}
     peerDependencies:
@@ -278,8 +282,8 @@ packages:
       magic-string: 0.29.0
       svelte: 3.55.1
       svelte-hmr: 0.15.1(svelte@3.55.1)
-      vite: 4.1.4(@types/node@18.14.6)(sass@1.58.3)
-      vitefu: 0.2.4(vite@4.1.4)
+      vite: 4.1.5(@types/node@18.14.6)(sass@1.58.3)
+      vitefu: 0.2.4(vite@4.1.5)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -610,8 +614,8 @@ packages:
     hasBin: true
     dev: true
 
-  /vite@4.1.4(@types/node@18.14.6)(sass@1.58.3):
-    resolution: {integrity: sha512-3knk/HsbSTKEin43zHu7jTwYWv81f8kgAL99G5NWBcA1LKvtvcVAC4JjBH1arBunO9kQka+1oGbrMKOjk4ZrBg==}
+  /vite@4.1.5(@types/node@18.14.6)(sass@1.58.3):
+    resolution: {integrity: sha512-zJ0RiVkf61kpd7O+VtU6r766xgnTaIknP/lR6sJTZq3HtVJ3HGnTo5DaJhTUtYoTyS/CQwZ6yEVdc/lrmQT7dQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
@@ -645,7 +649,7 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /vitefu@0.2.4(vite@4.1.4):
+  /vitefu@0.2.4(vite@4.1.5):
     resolution: {integrity: sha512-fanAXjSaf9xXtOOeno8wZXIhgia+CZury481LsDaV++lSvcU2R9Ch2bPh3PYFyoHW+w9LqAeYRISVQjUIew14g==}
     peerDependencies:
       vite: ^3.0.0 || ^4.0.0
@@ -653,7 +657,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 4.1.4(@types/node@18.14.6)(sass@1.58.3)
+      vite: 4.1.5(@types/node@18.14.6)(sass@1.58.3)
     dev: true
 
   /xterm@5.1.0:
