@@ -7,15 +7,14 @@ export const files: JSONFSNode[] = [
         name: 'package.json',
         contents: stripIndent`
             {
-                "name": "express-example",
+                "name": "hono-example",
                 "type": "module",
                 "dependencies": {
-                    "express": "latest",
-                    "nodemon": "latest"
+                    "nodemon": "^3.1.4"
                 },
                 "devDependencies": {
-                    "@types/express": "^4.17.17",
-                    "@types/node": "^18.14.6"
+                    "@types/node": "^18.19.42",
+                    "hono": "^4.5.3"
                 },
                 "scripts": {
                     "dev": "nodemon src/index.js"
@@ -31,17 +30,15 @@ export const files: JSONFSNode[] = [
                 type: 'FILE',
                 name: 'index.js',
                 contents: stripIndent`
-                    import express from 'express';
-                
-                    const app = express();
+                    import { Hono } from 'hono';
 
-                    app.get('/', (req, res) => {
-                        res.send('Hello World');
+                    const app = new Hono();
+
+                    app.get('/', (c) => {
+                        c.text('Hello World');
                     })
 
-                    app.listen(3000, () => {
-                        console.log('Online at http://localhost:3000');
-                    })
+                    export default app;
                 `,
             },
         ],

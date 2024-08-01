@@ -3,7 +3,7 @@
     import { get_container } from '$lib/container';
     import { refresh_state } from '$lib/state';
 
-    let example: 'express' | 'typescript' = 'express';
+    let example: 'hono' | 'typescript' = 'hono';
 
     const container = get_container();
 
@@ -11,8 +11,8 @@
         let files: JSONFSNode[] = [];
 
         switch (example) {
-            case 'express': {
-                ({ files } = await import('$lib/examples/express'));
+            case 'hono': {
+                ({ files } = await import('$lib/examples/hono'));
                 break;
             }
 
@@ -34,7 +34,7 @@
         Load Example FS
 
         <select bind:value={example}>
-            <option value="express">Express</option>
+            <option value="hono">Hono</option>
             <option value="typescript">TypeScript</option>
         </select>
     </label>
