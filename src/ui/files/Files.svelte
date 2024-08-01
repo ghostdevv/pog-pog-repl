@@ -19,6 +19,8 @@
 <style lang="scss">
     .fs {
         grid-area: fs;
+        display: flex;
+        flex-direction: column;
 
         min-width: 250px;
 
@@ -32,9 +34,6 @@
             align-items: center;
             gap: 8px;
         }
-
-        display: flex;
-        flex-direction: column;
 
         .tree {
             display: flex;

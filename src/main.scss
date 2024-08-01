@@ -26,13 +26,13 @@
 
     &.dropdown {
         position: relative;
+        z-index: 10000;
 
         &:hover .dropdown-content,
         &:focus-within .dropdown-content {
             display: block;
         }
 
-        z-index: 10000;
 
         .dropdown-content {
             display: none;
