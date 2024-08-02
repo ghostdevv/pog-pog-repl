@@ -3,7 +3,7 @@
     import { get_container } from '$lib/container';
     import { refresh_state } from '$lib/state';
 
-    let example: 'hono' | 'typescript' | 'svelte' = 'hono';
+    let example: 'hono' | 'typescript' | 'svelte' = 'svelte';
 
     const container = get_container();
 

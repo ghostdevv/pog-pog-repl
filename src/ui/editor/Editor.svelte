@@ -1,5 +1,7 @@
 <script lang="ts">
-    import TSWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
+    // import TSWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
+    import SvelteLanguageWorker from '$lib/workers/svelteWorker?worker';
+    import TypeScriptWorker from '$lib/workers/tsWorker?worker';
     import HTMLWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
     import JSONWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
     import EditorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
@@ -32,7 +34,7 @@
     monaco.languages.typescript.javascriptDefaults.setEagerModelSync(true);
     monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);
 
-    onMount(async () => {
+    onMount(() => {
         self.MonacoEnvironment = {
             getWorker: function (_moduleId, label) {
                 switch (label) {
@@ -48,7 +50,10 @@
 
                     case 'typescript':
                     case 'javascript':
-                        return new TSWorker();
+                        return new TypeScriptWorker();
+
+                    case 'svelte':
+                        return new SvelteLanguageWorker();
 
                     default:
                         return new EditorWorker();

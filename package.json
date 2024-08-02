@@ -21,6 +21,7 @@
     "svelte": "^4.2.18",
     "svelte-copy": "^1.4.2",
     "svelte-fa": "^4.0.2",
+    "svelte-language-server-web": "^0.0.8",
     "typescript": "^5.5.4",
     "vite": "^5.3.5",
     "xterm": "^5.3.0"
