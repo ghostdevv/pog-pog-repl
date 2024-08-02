@@ -3,7 +3,7 @@
     import { get_container } from '$lib/container';
     import { refresh_state } from '$lib/state';
 
-    let example: 'hono' | 'typescript' = 'hono';
+    let example: 'hono' | 'typescript' | 'svelte' = 'hono';
 
     const container = get_container();
 
@@ -20,6 +20,11 @@
                 ({ files } = await import('$lib/examples/typescript'));
                 break;
             }
+
+            case 'svelte': {
+                ({ files } = await import('$lib/examples/svelte'));
+                break;
+            }
         }
 
         await write_json_fs_tree(container, files);
@@ -34,6 +39,7 @@
         Load Example FS
 
         <select bind:value={example}>
+            <option value="svelte">Svelte</option>
             <option value="hono">Hono</option>
             <option value="typescript">TypeScript</option>
         </select>
